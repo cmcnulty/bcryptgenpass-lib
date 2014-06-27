@@ -27,6 +27,8 @@
     "vinyl-source-stream": "^0.1.1"
   },
   "dependencies": {
-    "crypto-js": "^3.1.2"
+    "crypto-js": "^3.1.2",
+    "js-scrypt": "^0.2.0",
+    "base85": "^1.2.1"
   }
 }
