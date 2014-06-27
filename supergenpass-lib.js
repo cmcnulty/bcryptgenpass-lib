@@ -9,12 +9,11 @@
 
 var md5 = require('crypto-js/md5');
 var sha512 = require('crypto-js/sha512');
-var encBase64 = require('crypto-js/enc-base64');
 var scryptLib = require('js-scrypt');
 var base85 = require('base85');
 
 var encBase85 = { stringify: base85.encode };
-var scrypt = function( password ){ return scryptLib.hashSync( password, 'e8a89e2d2abe3b40e9f18b7d84a4d234fe19b140' ) };
+var scrypt = function( password ){ return scryptLib.hashSync( password, 'e8a89e2d2abe3b40e9f18b7d84a4d234fe19b140' ); };
 
 var hashFunctions = {
 	md5: md5,
@@ -45,7 +44,7 @@ var base85Hash = function (str, hashFunction) {
 // password policy is satisfied.
 var generatePassword = function (hashInput, length, hashFunction) {
 
-	var generatedPassword = base85Hash(hashInput);
+	var generatedPassword = base85Hash(hashInput, hashFunction);
 	var passwordIsInvalid = !validatePassword(generatedPassword, length);
 
 	// Hash until password is valid.
@@ -73,8 +72,8 @@ var validatePassword = function (str, length) {
 
 	// Return true if all tests are satisfied.
 	return startsWithLowercaseLetter.test(password) &&
-	       containsUppercaseLetter.test(password) &&
-	       containsNumeral.test(password);
+			containsUppercaseLetter.test(password) &&
+			containsNumeral.test(password);
 
 };
 
