@@ -10,10 +10,16 @@
 var md5 = require('crypto-js/md5');
 var sha512 = require('crypto-js/sha512');
 var encBase64 = require('crypto-js/enc-base64');
+var scryptLib = require('js-scrypt');
+var base85 = require('base85');
+
+var encBase85 = { stringify: base85.encode };
+var scrypt = function( password ){ return scryptLib.hashSync( password, 'e8a89e2d2abe3b40e9f18b7d84a4d234fe19b140' ) };
 
 var hashFunctions = {
 	md5: md5,
-	sha512: sha512
+	sha512: sha512,
+	scrypt: scrypt
 };
 
 var defaults = {
@@ -30,30 +36,22 @@ var ccTLDList = ccTLDs.split('|');
 var ccTLDListLength = ccTLDList.length;
 
 // Compute hexadecimal hash and convert it to Base-64.
-var customBase64Hash = function (str, hashFunction) {
-	var hash = hashFunction(str).toString(encBase64);
-	return customBase64(hash);
+var base85Hash = function (str, hashFunction) {
+	var hash = hashFunction(str).toString(encBase85);
+	return hash;
 };
 
-// Replace non-alphanumeric characters and padding in the Base-64 alphabet to
-// comply with most password policies.
-var customBase64 = function (str) {
-	return str.replace(/\+/g, '9').replace(/\//g, '8').replace(/\=/g, 'A');
-};
-
-// Loop ten times using customBase64Hash, then continue hashing until the
+// Generate initial password using scrypt, then base85 re-encode until
 // password policy is satisfied.
 var generatePassword = function (hashInput, length, hashFunction) {
 
-	var i = 0;
-	var generatedPassword = hashInput;
-	var passwordIsInvalid = true;
+	var generatedPassword = base85Hash(hashInput);
+	var passwordIsInvalid = !validatePassword(generatedPassword, length);
 
 	// Hash until password is valid.
 	while (passwordIsInvalid) {
-		i++;
-		generatedPassword = customBase64Hash(generatedPassword, hashFunction);
-		passwordIsInvalid = i < 10 || !validatePassword(generatedPassword, length);
+		generatedPassword = base85.encode(generatedPassword);
+		passwordIsInvalid = !validatePassword(generatedPassword, length);
 	}
 
 	return generatedPassword.substring(0, length);
