@@ -1,26 +1,30 @@
-# supergenpass-lib
+# bcryptgenpass-lib
 
 [![Build Status][build-status]][travis-ci]
 [![NPM version][npm-badge]][fury-io]
 [![Dependencies Status][dependencies-status]][gemnasium]
 
-This is the official JavaScript implementation of [SuperGenPass][sgp]. It
-provides the code used by the bookmarklet and mobile version of SuperGenPass to
-generate passwords. If you are building or have built your own JavaScript-based
-application for SuperGenPass, please consider using this library.
+This is alternative password generator for [SuperGenPass][sgp]. It can be used as a drop-in replacement with minor modifications to the parent project.
+
+There are two questions when evaluating a password generator, how hard would it be to crack the generated password, and how hard would it be to determine the master password if you know one of the generated passwords?
+This fork is designed to make both of those tasks more difficult for an attacker.  
+First, we make it hard for an attacker to crack one of your passwords by generating a password that uses 85 characters rather than 64, and ensuring that all generated passwords contain some symbols.  
+
+If one of your passwords *does* get cracked, the next problem is preventing the user from using the password for one site to determine your master password.  In order to do that we use bcrypt to slow down any attempt to crack the master password, so that it will be virtually impossible to determine your master password.
+
 
 
 ## NPM module
 
 ```shell
-npm install supergenpass-lib
+npm install bcryptgenpass-lib
 ```
 
 
 ## Usage
 
 ```javascript
-var supergenpass = require('supergenpass-lib');
+var bcryptgenpass = require('bcryptgenpass-lib');
 
 // A string containing the user's master password.
 var masterPassword = 'master-password';
@@ -63,36 +67,12 @@ additional entropy. (The value for those characters will always be `A`.)
 A string specifying the requested hash function. The only supported values are
 `'md5'` or `'sha512'`.
 
-### removeSubdomains
+### costFactor
 
-* Default `true`
-* Expects `Boolean`
-
-A boolean value directing whether or not to remove subdomains from the hostname
-before generating the password.
+* Default `10`
+* Expects `Number`
 
 
-## Domain name isolation
-
-By default, `supergenpass-lib` isolates the domain name (e.g., `example.com`)
-from the hostname by removing all subdomains. This ensures that the same
-password is generated at `example.com`, `www.example.com`, and
-`login.example.com`. It additionally uses a hardcoded list of country-code and
-special-purpose TLDs to produce different passwords across sites registered
-there. While this list is no doubt incomplete and out-of-date, it remains
-static to maintain backwards compatibility. You can disable subdomain removal
-in the options.
-
-To help provide user feedback about the exact hostname used to generate the
-password, `supergenpass-lib` provides a `hostname` method that can be used
-separately.
-
-```javascript
-// Isolate a domain name from a URL using SuperGenPass's rules.
-var hostname = supergenpass.hostname('http://login.example.com/doLogin.htm', {
-  removeSubdomains: true  // default = true
-});
-```
 
 
 ## Browser environments
