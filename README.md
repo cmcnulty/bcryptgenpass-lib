@@ -33,7 +33,7 @@ var masterPassword = 'master-password';
 var URI = 'http://www.example.com/page.html';
 
 // Generate the password.
-var generatedPassword = supergenpass(masterPassword, URI, {/* options */});
+var generatedPassword = bcryptgenpass(masterPassword, URI, {/* options */});
 ```
 
 
@@ -56,23 +56,14 @@ produced by manually concatenating the master and secret passwords.
 * Expects `Number`
 
 Length of the generated password. Valid lengths are integers between 4 and 24
-inclusive. Note that 23- and 24-character MD5-based passwords provide no
-additional entropy. (The value for those characters will always be `A`.)
-
-### method
-
-* Default `'md5'`
-* Expects `String`
-
-A string specifying the requested hash function. The only supported values are
-`'md5'` or `'sha512'`.
+inclusive.
 
 ### costFactor
 
 * Default `10`
 * Expects `Number`
 
-
+Work factor for the bCrypt algorithm.  You'll want to experiment with this value to determine the maximum you can tolerate based on the length of time it takes the browser to calculate the password.
 
 
 ## Browser environments
