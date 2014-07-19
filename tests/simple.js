@@ -1,4 +1,4 @@
-var supergenpass = require('../supergenpass-lib');
+var supergenpass = require('../bcryptgenpass-lib');
 
 exports.testSimple = function(test){
     var data = [
