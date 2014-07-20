@@ -1,15 +1,15 @@
 var supergenpass = require('../bcryptgenpass-lib');
 
 var data = [
-    ['ft8iv4t5sX', 'Γαζέες καὶ μυρτιὲς δὲν θὰ βρῶ πιὰ στὸ χρυσαφὶ ξέφωτο'],
-    ['o1AWdbILuJ', 'Benjamín pidió una bebida de kiwi y fresa'],
-    ['uqWgZf34mr', 'Ça me fait peur de fêter noël là, sur cette île bizarroïde où'],
-    ['iUL7ndPlsD', 'Árvíztűrő tükörfúrógép'],
-    ['fDOVXY6AhC', 'わかよたれそつねならむ'],
-    ['i4LtmfRGl8', 'ウヰノオクヤマ ケフコエテ'],
-    ['wD8T8KozGO', 'מצא לו חברה איך הקליטה'],
-    ['jtUcAzTL4l', 'В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!'],
-    ['rnXePhv0JG', 'จงฝ่าฟันพัฒนาวิชาการ']
+    [';_*)H2bGrJ', 'Γαζέες καὶ μυρτιὲς δὲν θὰ βρῶ πιὰ στὸ χρυσαφὶ ξέφωτο'],
+    ['0Lo8fB.IsZ', 'Benjamín pidió una bebida de kiwi y fresa'],
+    ['0kWs3<b49E', 'Ça me fait peur de fêter noël là, sur cette île bizarroïde où'],
+    ['2)[Hd:/4?)', 'Árvíztűrő tükörfúrógép'],
+    [';g2tl:0LJ5', 'わかよたれそつねならむ'],
+    ['DJi*k6"Nl(', 'ウヰノオクヤマ ケフコエテ'],
+    ['H=^tp93FPl', 'מצא לו חברה איך הקליטה'],
+    ['CfP=UB1c39', 'В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!'],
+    ['EcEsX04Ja>', 'จงฝ่าฟันพัฒนาวิชาการ']
 ].map(function(row){
     return {
         input: row[1],
