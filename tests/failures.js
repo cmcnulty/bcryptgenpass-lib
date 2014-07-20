@@ -2,7 +2,6 @@ var supergenpass = require('../bcryptgenpass-lib');
 
 exports.testFailures = function(test){
     var data = [
-        ['test', 'example.com', { method: 'default' }],
         ['test', 'example.com', { length: -1 }],
         ['test', 'example.com', { length: 0 }],
         ['test', 'example.com', { length: '12'}],
