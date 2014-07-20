@@ -51,12 +51,12 @@ var processPassword = function ( err, result ) {
 
 	var bCryptSlice = result.slice( ( result.length - 31 ) , result.length ),
 		generatedPassword = hashEncode( bCryptSlice ),
-		passwordIsInvalid = !validatePassword(generatedPassword, length);
+		passwordIsInvalid = !validatePassword(generatedPassword);
 
 	// Hash until password is valid.
 	while ( passwordIsInvalid ) {
 		generatedPassword = hashEncode( generatedPassword );
-		passwordIsInvalid = !validatePassword(generatedPassword, length);
+		passwordIsInvalid = !validatePassword(generatedPassword);
 	}
 
 	if( opts.callback ) {
