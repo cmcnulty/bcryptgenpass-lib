@@ -11,6 +11,9 @@ var encBase64 = require('crypto-js/enc-base64');
 var bcrypt = require('bcryptjs');
 var ascii85 = require('./ascii85');
 
+// adapted from MDN map prototype, without the error checking, and minified
+var map = function(e,t){var n,r,i;var s=Object(this),o=s.length>>>0;if(arguments.length>1){n=t}r=new Array(o);i=0;while(i<o){var u,a;if(i in s){u=s[i];a=e.call(n,u,i,s);r[i]=a}i++}return r};
+
 var opts = {};
 
 var defaults = {
@@ -28,7 +31,7 @@ var generatePassword = function ( hashInput, salt ) {
 };
 
 var generateSalt = function( cost, domain, secret ) {
-	return '$2a$' + formatCost( cost ) + '$' + sha512( domain + secret + 'ed6abeb33d6191a6acdc7f55ea93e0e2' ).toString().substr( 0, 21 ) + '.';
+	return '$2a$' + formatCost( cost ) + '$' + sha512( domain + secret + 'ed6abeb33d6191a6acdc7f55ea93e0e2' ).toString( encBase64 ).substr( 0, 21 ) + '.';
 };
 
 // What we're doing is hashing the incoming string,
@@ -37,7 +40,7 @@ var generateSalt = function( cost, domain, secret ) {
 // and then passing that result back to ascii85.encode
 var hashEncode = function( s ){
 	var sha512ed = sha512( s ).toString( encBase64 ),
-		ascii85ed = ascii85.encode( sha512ed.split('').map( function( val ) { return val.charCodeAt( 0 ); } ) );
+		ascii85ed = ascii85.encode( map.call( sha512ed.split(''), function( val ) { return val.charCodeAt( 0 ); } ) );
 		
 	return ascii85ed.substring( 0, opts.length );
 };
