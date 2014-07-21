@@ -12,7 +12,7 @@ var bcrypt = require('bcryptjs');
 var ascii85 = require('./ascii85');
 
 // adapted from MDN map prototype, without the error checking, and minified
-var map = function(e,t){var n,r,i;var s=Object(this),o=s.length>>>0;if(arguments.length>1){n=t}r=new Array(o);i=0;while(i<o){var u,a;if(i in s){u=s[i];a=e.call(n,u,i,s);r[i]=a}i++}return r};
+var map = function(e,t){var n,r,i;var s=Object(this),o=s.length>>>0;if(arguments.length>1){n=t;}r=new Array(o);i=0;while(i<o){var u,a;if(i in s){u=s[i];a=e.call(n,u,i,s);r[i]=a;}i++;}return r;};
 
 var opts = {};
 
