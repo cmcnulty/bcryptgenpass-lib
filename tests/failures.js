@@ -6,7 +6,7 @@ exports.testFailures = function(test){
         ['test', 'example.com', { length: 0 }],
         ['test', 'example.com', { length: '12'}],
         ['test', 'example.com', { length: 3 }],
-        ['test', 'example.com', { length: 28 }],
+        ['test', 'example.com', { length: 161 }],
         ['test', 'example.com', { secret: false }],
         ['test', 'example.com', { secret: [] }],
         [false, 'example.com'],
