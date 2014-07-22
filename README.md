@@ -102,7 +102,7 @@ A huge thank you to [SuperGenPass][sgp] author [Chris Zarate][chriszarate] who w
 [build-status]: https://secure.travis-ci.org/cmcnulty/bcryptgenpass-lib.svg?branch=master
 [dependencies-status]: https://gemnasium.com/cmcnulty/bcryptgenpass-lib.svg
 [travis-ci]: http://travis-ci.org/cmcnulty/bcryptgenpass-lib
-[gemnasium]: https://gemnasium.com/cmcnulty/supergenpass-lib
+[gemnasium]: https://gemnasium.com/cmcnulty/bcryptgenpass-lib
 [crypto-js]: https://www.npmjs.org/package/crypto-js
 [chriszarate]: https://github.com/chriszarate/
 [gplv2]: http://www.gnu.org/licenses/gpl-2.0.html
