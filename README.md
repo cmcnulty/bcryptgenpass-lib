@@ -1,7 +1,6 @@
 # bcryptgenpass-lib
 
 [![Build Status][build-status]][travis-ci]
-[![NPM version][npm-badge]][fury-io]
 [![Dependencies Status][dependencies-status]][gemnasium]
 
 This is alternative password generator for [SuperGenPass][sgp]. It can be used as a drop-in replacement with minor modifications to the parent project.
@@ -96,19 +95,15 @@ released under the [GPLv2][gplv2].
 
 ## Thanks
 
-Development of this library was helped tremendously by [Denis Sokolov][denis],
-author of the [SuperGenPass Chrome extension][chrome-ext].
+A huge thank you to [SuperGenPass][sgp] author [Chris Zarate][chriszarate] who with his generous work has made maintaining good password policy insanely easy.
 
 
 [sgp]: http://supergenpass.com
 [build-status]: https://secure.travis-ci.org/cmcnulty/bcryptgenpass-lib.svg?branch=master
 [dependencies-status]: https://gemnasium.com/cmcnulty/bcryptgenpass-lib.svg
-[npm-badge]: https://badge.fury.io/js/supergenpass-lib.svg
-[travis-ci]: http://travis-ci.org/cmcnulty/supergenpass-lib
-[fury-io]: http://badge.fury.io/js/supergenpass-lib
+[travis-ci]: http://travis-ci.org/cmcnulty/bcryptgenpass-lib
 [gemnasium]: https://gemnasium.com/cmcnulty/supergenpass-lib
 [crypto-js]: https://www.npmjs.org/package/crypto-js
-[denis]: http://sokolov.cc
-[chrome-ext]: https://chrome.google.com/extensions/detail/bmmmhbgdbpnbfefmacdlbpfgegcibkjo/
+[chriszarate]: https://github.com/chriszarate/
 [gplv2]: http://www.gnu.org/licenses/gpl-2.0.html
 [z85]: http://rfc.zeromq.org/spec:32
