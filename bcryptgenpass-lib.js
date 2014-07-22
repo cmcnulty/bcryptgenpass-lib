@@ -9,7 +9,7 @@
 var sha512 = require('crypto-js/sha512');
 var encBase64 = require('crypto-js/enc-base64');
 var bcrypt = require('bcryptjs');
-var ascii85 = require('./ascii85');
+var ascii85 = require('z85');
 
 // adapted from MDN map prototype, without the error checking, and minified
 var map = function(e,t){var n,r,i;var s=Object(this),o=s.length>>>0;if(arguments.length>1){n=t;}r=new Array(o);i=0;while(i<o){var u,a;if(i in s){u=s[i];a=e.call(n,u,i,s);r[i]=a;}i++;}return r;};
@@ -18,8 +18,8 @@ var opts = {};
 
 var defaults = {
 	secret: '',
-	length: 10,
-	costFactor: 10
+	length: 12,
+	costFactor: 12
 };
 
 var generatePassword = function ( hashInput, salt ) {
@@ -31,42 +31,33 @@ var generatePassword = function ( hashInput, salt ) {
 };
 
 var generateSalt = function( cost, domain, secret ) {
-	return '$2a$' + formatCost( cost ) + '$' + sha512( domain + secret + 'ed6abeb33d6191a6acdc7f55ea93e0e2' ).toString( encBase64 ).substr( 0, 21 ) + '.';
+	return '$2a$' + formatCost( cost ) + '$' + sha512( domain + secret + 'ed6abeb33d6191a6acdc7f55ea93e0e2' ).toString( encBase64 ).replace('+','.').substr( 0, 21 ) + '.';
 };
 
-// What we're doing is hashing the incoming string,
-// then splitting it into an array,
-// then applying charCodeAt to each element of the array,
-// and then passing that result back to ascii85.encode
-var hashEncode = function( s ){
-	var sha512ed = sha512( s ).toString( encBase64 ),
+// sha512 the incoming string, the convert to bytearray for converting into ascii85.
+var hashEncode = function( s, l ){
+	var sha512ed = sha512( s ).toString(),
 		ascii85ed = ascii85.encode( map.call( sha512ed.split(''), function( val ) { return val.charCodeAt( 0 ); } ) );
-		
-	return ascii85ed.substring( 0, opts.length );
+	return ascii85ed.substring( 0, l );
 };
 
 // Generate initial password using bcrypt, then base85 re-encode until
 // password policy is satisfied.
-var processPassword = function ( err, result ) {
+var processPassword = function ( err, generatedPassword ) {
 	if ( err instanceof Error ){
 		throw err;
 	}
 
-	var bCryptSlice = result.slice( ( result.length - 31 ) , result.length ),
-		generatedPassword = hashEncode( bCryptSlice ),
-		passwordIsInvalid = !validatePassword(generatedPassword);
-
 	// Hash until password is valid.
-	while ( passwordIsInvalid ) {
-		generatedPassword = hashEncode( generatedPassword );
-		passwordIsInvalid = !validatePassword(generatedPassword);
-	}
+	do {
+		generatedPassword = hashEncode( generatedPassword, opts.length );
+	} while ( !validatePassword( generatedPassword ) );
 
 	if( opts.callback ) {
 		opts.callback( generatedPassword );
-	} 
+	}
+	
 	return generatedPassword;
-
 };
 
 var validateCost = function ( cost ) {
@@ -106,8 +97,9 @@ var validateCombinedPasswordInput = function (str) {
 };
 
 var validateLength = function (num) {
-	if (num !== parseInt(num, 10) || num < 4 || 24 < num) {
-		throw new Error('Length must be an integer between 4 and 24: ' + num);
+	var max = hashEncode('a').length;
+	if (num !== parseInt(num, 10) || num < 4 || max < num) {
+		throw new Error('Length must be an integer between 4 and ' + max + ': ' + num);
 	}
 };
 
@@ -139,6 +131,7 @@ var api = function (masterPassword, url, options) {
 
 	var input = masterPassword + opts.secret + ':' + url;
 	var salt = generateSalt( opts.costFactor, url, opts.secret );
+	
 	return generatePassword( input, salt );
 
 };
