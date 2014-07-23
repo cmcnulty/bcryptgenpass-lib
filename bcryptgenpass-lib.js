@@ -6,6 +6,9 @@
 
 'use strict';
 
+//polyfill for Date.now - see https://github.com/dcodeIO/bcrypt.js/issues/12
+Date.now = Date.now || function() { return +new Date(); };
+
 var sha512 = require('crypto-js/sha512');
 var encBase64 = require('crypto-js/enc-base64');
 var bcrypt = require('bcryptjs');
