@@ -55,7 +55,7 @@ produced by manually concatenating the master and secret passwords.
 * Default `12`
 * Expects `Number`
 
-Length of the generated password. Valid lengths are integers between 4 and 24
+Length of the generated password. Valid lengths are integers between 4 and 160
 inclusive.
 
 ### costFactor
@@ -75,7 +75,7 @@ the global `bcryptgenpass` as documented above.
 
 ## Explanation of the algorithm
 
-bCryptGenPass employs the simple password hashing scheme of SuperGenPass. At its essence, it takes
+`bcryptgenpass-lib` employs the simple password hashing scheme of SuperGenPass. At its essence, it takes
 a master password and a hostname and concatenates them together:
 
 ```
