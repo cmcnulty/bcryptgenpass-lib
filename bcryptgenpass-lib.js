@@ -9,10 +9,7 @@
 var sha512 = require('crypto-js/sha512');
 var encBase64 = require('crypto-js/enc-base64');
 var bcrypt = require('bcryptjs');
-var ascii85 = require('z85');
-
-// adapted from MDN map prototype, without the error checking, and minified
-var map = function(e,t){var n,r,i;var s=Object(this),o=s.length>>>0;if(arguments.length>1){n=t;}r=new Array(o);i=0;while(i<o){var u,a;if(i in s){u=s[i];a=e.call(n,u,i,s);r[i]=a;}i++;}return r;};
+var z85 = require('./z85');
 
 var opts = {};
 
@@ -34,13 +31,13 @@ var generateSalt = function( cost, domain, secret ) {
 	return '$2a$' + formatCost( cost ) + '$' + sha512( domain + secret + 'ed6abeb33d6191a6acdc7f55ea93e0e2' ).toString( encBase64 ).replace('+','.').substr( 0, 21 ) + '.';
 };
 
-// sha512 the incoming string, the convert to bytearray for converting into ascii85.
+// sha512 the incoming string, the convert to bytearray for converting into z85.
 var hashEncode = function( s, l ){
 	var sha512ed = sha512( s ).toString(),
-		ascii85ed = ascii85.encode( map.call( sha512ed.split(''), function( val ) { return val.charCodeAt( 0 ); } ) );
-	
+		z85ed = z85.encode( sha512ed );
+
 	// for no reason whatsoever, attempt to support firefox 3.0	
-	return ascii85ed.substring( 0, l || ascii85ed.length );
+	return z85ed.substring( 0, l || z85ed.length );
 	
 };
 
@@ -59,7 +56,6 @@ var processPassword = function ( err, generatedPassword ) {
 	if( opts.callback ) {
 		opts.callback( generatedPassword );
 	}
-	
 	return generatedPassword;
 };
 
@@ -75,7 +71,7 @@ var formatCost = function ( cost ) {
 };
 
 // removed rule that first character must be lower-case letter
-// added rule that password must contain at least one non-alphanumeric character (from ascii85)
+// added rule that password must contain at least one non-alphanumeric character (from z85)
 var validatePassword = function ( password ) {
 	return (
 		password.search(/[0-9]/) >= 0 &&
