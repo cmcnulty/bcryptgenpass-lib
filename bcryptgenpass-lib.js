@@ -6,9 +6,6 @@
 
 'use strict';
 
-//polyfill for Date.now - see https://github.com/dcodeIO/bcrypt.js/issues/12
-Date.now = Date.now || function() { return +new Date(); };
-
 var sha512 = require('crypto-js/sha512');
 var encBase64 = require('crypto-js/enc-base64');
 var bcrypt = require('bcryptjs');
@@ -41,7 +38,10 @@ var generateSalt = function( cost, domain, secret ) {
 var hashEncode = function( s, l ){
 	var sha512ed = sha512( s ).toString(),
 		ascii85ed = ascii85.encode( map.call( sha512ed.split(''), function( val ) { return val.charCodeAt( 0 ); } ) );
-	return ascii85ed.substring( 0, l );
+	
+	// for no reason whatsoever, attempt to support firefox 3.0	
+	return ascii85ed.substring( 0, l || ascii85ed.length );
+	
 };
 
 // Generate initial password using bcrypt, then base85 re-encode until

@@ -29,8 +29,8 @@ var bcryptgenpass = require('bcryptgenpass-lib');
 // A string containing the user's master password.
 var masterPassword = 'master-password';
 
-// A URI or hostname of the site being visited.
-var URI = 'http://www.example.com/page.html';
+// A URI or hostname of the site being visited, stripped of protocol, subdomains and paths
+var URI = 'example.com';
 
 // Generate the password.
 var generatedPassword = bcryptgenpass(masterPassword, URI, {/* options */});
