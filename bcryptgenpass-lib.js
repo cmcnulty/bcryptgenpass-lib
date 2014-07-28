@@ -36,7 +36,7 @@ var hashEncode = function( s, l ){
 	var sha512ed = sha512( s ).toString(),
 		z85ed = z85.encode( sha512ed );
 
-	// for no reason whatsoever, attempt to support firefox 3.0	
+	// firefox 3.0 (?!) doesn't support undefined second param to substring
 	return z85ed.substring( 0, l || z85ed.length );
 	
 };
