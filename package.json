@@ -31,10 +31,10 @@
     "files": "tap_tests/*.js",
     "browsers": [
       "ie/6..latest",
-      "chrome/22..latest",
-      "firefox/16..latest",
-      "safari/latest",
-      "opera/11.0..latest",
+      "chrome/5..latest",
+      "firefox/3..latest",
+      "safari/4..latest",
+      "opera/12..latest",
       "iphone/6",
       "ipad/6",
       "android-browser/latest"
