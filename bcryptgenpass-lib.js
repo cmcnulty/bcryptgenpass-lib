@@ -60,27 +60,34 @@ var processPassword = function ( err, generatedPassword ) {
 };
 
 var validateCost = function ( cost ) {
-	// floor should normalize to either a number or NaN, then min/max it to between 4 an 31
-	// then left pad it with zeros - can assume that it will only have a length of 1 or 2
-	var default_cost = 10;
-	return Math.min( 31, Math.max( 4, Math.floor( cost ) || default_cost ) );
+	if( !(cost >= 4 && cost <= 31) ) {
+		throw new Error("Cost must be a number between 4 and 31");
+	}
+	return cost;
 };
 
+// will zero pad the cost, this *assumes* that cost is valid, if it's not, bCrypt will handle throwing the error
 var formatCost = function ( cost ) {
-	return ( '0' + validateCost( cost ) ).slice( -2 );
+	return ( '0' + cost ).slice( -2 );
 };
 
 // removed rule that first character must be lower-case letter
 // added rule that password must contain at least one non-alphanumeric character (from z85)
-var validatePassword = function ( password ) {
-	return (
-		password.search(/[0-9]/) >= 0 &&
-		password.search(/[A-Z]/) >= 0 &&
-		password.search(/[a-z]/) >= 0 &&
-		password.search(/[\x21-\x2F\x3A-\x40\x5B-\x60]/) >= 0
-	);
-};
+var passwordTests = [
+	/[0-9]/,
+	/[A-Z]/,
+	/[a-z]/,
+	/[\x2e\x2d\x3a\x2b\x3d\x5e\x21\x2f\x2a\x3f\x26\x3c\x3e\x28\x29\x5b\x5d\x7b\x7d\x40\x25\x24\x23]/
+];
 
+var validatePassword = function ( password ) {
+	for( var l = passwordTests.length, i = 0;  i < l; i++) {
+		if( password.search(passwordTests[i]) === -1 ) {
+			return false;
+		};
+	}
+	return true;
+};
 
 var validatePasswordInput = function (str) {
 	var type = typeof str;
@@ -97,8 +104,8 @@ var validateCombinedPasswordInput = function (str) {
 
 var validateLength = function (num) {
 	var max = hashEncode('a').length;
-	if (num !== parseInt(num, 10) || num < 4 || max < num) {
-		throw new Error('Length must be an integer between 4 and ' + max + ': ' + num);
+	if (num !== parseInt(num, 10) || num < passwordTests.length || max < num) {
+		throw new Error('Length must be an integer between ' + passwordTests.length + ' and ' + max + ': ' + num);
 	}
 };
 
@@ -115,10 +122,9 @@ var validateOptions = function ( options ) {
 
 	validatePasswordInput(options.secret);
 	validateLength(options.length);
-	options.costFactor = validateCost(options.costFactor);
+	validateCost(options.costFactor);
 
 	return options;
-
 };
 
 // url is assumed to have already been validated on being passed in.
@@ -130,15 +136,12 @@ var api = function (masterPassword, url, options) {
 
 	var input = masterPassword + opts.secret + ':' + url;
 	var salt = generateSalt( opts.costFactor, url, opts.secret );
-	
-	return generatePassword( input, salt );
 
+	return generatePassword( input, salt );
 };
 
 api.hostname = function () {
     throw new Error('hostname() function is not implemented.');
 };
-
-api.validateCost = validateCost;
 
 module.exports = api;
