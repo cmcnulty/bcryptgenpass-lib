@@ -4,8 +4,7 @@
   "description": "Generate passwords for SuperGenPass with bCrypt and special characters",
   "main": "bcryptgenpass-lib.js",
   "scripts": {
-    "test": "nodeunit tests",
-	"test_browsers": "tape tap_tests/*.js",
+    "test": "tape tap_tests/*.js"
   },
   "repository": {
     "type": "git",
@@ -40,7 +39,6 @@
       "ipad/6",
       "android-browser/latest"
     ]
-  },	
   },
   "dependencies": {
     "crypto-js": "^3.1.2",
