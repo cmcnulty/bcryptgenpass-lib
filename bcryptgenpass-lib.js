@@ -23,7 +23,7 @@ var generatePassword = function ( hashInput, salt ) {
 	if( opts.callback ) {
 		bcrypt.hash( hashInput, salt, processPassword, opts.progress );
 	} else {
-		return processPassword.call( null, null, bcrypt.hashSync( hashInput, salt ) );
+		return processPassword( null, bcrypt.hashSync( hashInput, salt ) );
 	}
 };
 
@@ -60,28 +60,32 @@ var processPassword = function ( err, generatedPassword ) {
 };
 
 var validateCost = function ( cost ) {
-	if( !(cost >= 4 && cost <= 31) ) {
-		throw new Error("Cost must be a number between 4 and 31");
+	if( !(parseInt(cost, 10).toString() === cost.toString() && cost >= 4 && cost <= 31) ) {
+		throw new Error("Work factor must be a number between 4 and 31");
 	}
 	return cost;
 };
 
-// will zero pad the cost, this *assumes* that cost is valid, if it's not, bCrypt will handle throwing the error
+// will zero pad the cost, this *assumes* that cost has already been validated
 var formatCost = function ( cost ) {
 	return ( '0' + cost ).slice( -2 );
 };
 
-// removed rule that first character must be lower-case letter
-// added rule that password must contain at least one non-alphanumeric character (from z85)
+// The symbol test is ascii85 encoding agnostic, 
+// it just checks that one of the printable ASCII symbols is present,
+// not all of the symbols that it tests for are in the z85 encoding
 var passwordTests = [
 	/[0-9]/,
 	/[A-Z]/,
 	/[a-z]/,
-	/[\x2e\x2d\x3a\x2b\x3d\x5e\x21\x2f\x2a\x3f\x26\x3c\x3e\x28\x29\x5b\x5d\x7b\x7d\x40\x25\x24\x23]/
+	/[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]/
 ];
 
 var validatePassword = function ( password ) {
-	for( var l = passwordTests.length, i = 0;  i < l; i++) {
+	var l = passwordTests.length,
+		i = 0;
+		
+	for(;  i < l; i++) {
 		if( password.search(passwordTests[i]) === -1 ) {
 			return false;
 		};
