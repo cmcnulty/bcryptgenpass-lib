@@ -1,4 +1,6 @@
 var supergenpass = require('../bcryptgenpass-lib');
+var test = require('tape');
+
 var opts = {costFactor: 6};
 var data = [
     ['h-Ce7h8c{#gb', 'Γαζέες καὶ μυρτιὲς δὲν θὰ βρῶ πιὰ στὸ χρυσαφὶ ξέφωτο', opts],
@@ -17,9 +19,12 @@ var data = [
     };
 });
 
-exports.testUnicode = function(test){
+test('unicode comparisons', function (test) {
+
+	test.plan(data.length);
+
     data.forEach(function(row){
         test.equal(supergenpass(row.input, 'example.com'), row.sgp);
     });
-    test.done();
-};
+    
+});
