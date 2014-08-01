@@ -1,6 +1,6 @@
 {
   "name": "bcryptgenpass-lib",
-  "version": "0.0.10",
+  "version": "0.1.1",
   "description": "Generate passwords for SuperGenPass with bCrypt and special characters",
   "main": "bcryptgenpass-lib.js",
   "scripts": {
@@ -30,13 +30,10 @@
   "testling": {
     "files": "tap_tests/*.js",
     "browsers": [
-      "ie/6..latest",
-      "chrome/5..latest",
-      "firefox/3..latest",
-      "safari/4..latest",
-      "opera/12..latest",
-      "iphone/6",
-      "ipad/6",
+      "ie/latest",
+      "chrome/latest",
+      "firefox/latest",
+      "safari/latest",
       "android-browser/latest"
     ]
   },
