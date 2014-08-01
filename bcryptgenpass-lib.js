@@ -82,15 +82,14 @@ var passwordTests = [
 ];
 
 var validatePassword = function ( password ) {
-	var l = passwordTests.length,
-		i = 0;
+	var l = passwordTests.length;
 		
-	for(;  i < l; i++) {
-		if( password.search(passwordTests[i]) === -1 ) {
-			return false;
-		};
-	}
-	return true;
+	// keep looping as long as we keep passing tests
+	for(; l-- && passwordTests[ l ].test( password ); ) {}
+	
+	// If all tests have passed l will equal -1, 
+	// If while loop was broken out of l will be 0,1,2 or 3
+	return l < 0;
 };
 
 var validatePasswordInput = function (str) {
