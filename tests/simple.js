@@ -4,10 +4,10 @@ var test = require('tape');
 test('simple comparisons', function (test) {
 	
     var data = [
-        ['fG9w#whDn5fF', 'test', 'example.com'],
-        ['i5>C', 'test', 'example.com', { length: 4, costFactor: 10 }],
-        ['v>.HKg?6]LwIVq4f/7:Aw[iO', 'test', 'example.com', { length: 24, costFactor: 11 }],
-        ['wh=kKg?6#Ovl', 'test', 'example.com', { length: 12, secret: 'test', costFactor: 8 }]
+        ['iaL0Wgb7WAg+', 'test', 'example.com', { costFactor: 4 }],
+        ['w[9P', 'test', 'example.com', { length: 4, costFactor: 4 }],
+        ['iaL0Wgb7WAg+@U$iwUe8fGy*', 'test', 'example.com', { length: 24, costFactor: 4 }],
+        ['ggB&Kw&RO8i5', 'test', 'example.com', { length: 12, secret: 'test', costFactor: 4 }]
     ];
 
 	test.plan(data.length);
